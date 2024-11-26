@@ -11,6 +11,7 @@ import org.springframework.beans.factory.InitializingBean;
 public class GreetingTask implements Tasklet, InitializingBean {
 
     /**
+     * Tasklet 구현 메서드
      * StepContribution과 ChunkContext를 파라미터로 받는다.
      * 최종적으로 RepeatStatus를 반환하며 이 값은 다음과 같음.
      *      FINISHED : 태스크릿이 종료되었음을 나타낸다.
@@ -30,8 +31,12 @@ public class GreetingTask implements Tasklet, InitializingBean {
         return RepeatStatus.FINISHED;
     }
 
+    /**
+     * InitializeBean 구현 메서드
+     * @throws Exception
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.info("--------------------- After Properties Set ---------------------");
+        log.info("--------------------- After Properties Set() ---------------------");
     }
 }

@@ -1,7 +1,7 @@
 spring:
-#  batch:
-#    jdbc:
-#      initialize-schema: always
+  batch:
+    job:
+      name: "FLAT_FILE_CHUNK_JOB"
   datasource:
     hikari:
       maximum-pool-size: 10

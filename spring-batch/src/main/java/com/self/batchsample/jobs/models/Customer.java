@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+@Setter // 배치 변환 과정에서 Setter가 사용될 수 있음.
 public class Customer {
 
     private String name;

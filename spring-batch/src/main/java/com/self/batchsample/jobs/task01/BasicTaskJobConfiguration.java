@@ -29,6 +29,7 @@ public class BasicTaskJobConfiguration {
     }
 
     /**
+     * step 빈으로 등록
      * StepBuilder를 생성하고, 스텝의 이름을 myStep 으로 지정했다.
      * 그리고 이 스텝은 jobRepository에 등록한다.
      * tasklet을 스텝에 추가하고, greetingTasklet()을 통해 싱글톤 GreetingTask를 주입했다
@@ -50,6 +51,7 @@ public class BasicTaskJobConfiguration {
      * incremeter는 job이 지속적으로 실행 될 때, job의 유니크성을 구분할 수 있는 방법을 설정한다.
      * start(step)을 통해서 job의 시작 포인트를 잡는다.
      * 처음 시작하는 step은 우리가 파라미터로 받은 step을 등록했다.
+     * job 하나엔 여러가지 step 이 존재함.
      * @param step
      * @param jobRepository
      * @return
