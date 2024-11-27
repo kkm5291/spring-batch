@@ -19,7 +19,7 @@ public class AggregateCustomerProcessor implements ItemProcessor<Customer, Custo
         aggregateCustomers.putIfAbsent("TOTAL_AGES", 0);
 
         aggregateCustomers.put("TOTAL_CUSTOMERS", aggregateCustomers.get("TOTAL_CUSTOMERS") + 1);
-        aggregateCustomers.put("TOTAL_AGES", aggregateCustomers.get("TOTAL_AGES") + 1);
+        aggregateCustomers.put("TOTAL_AGES", aggregateCustomers.get("TOTAL_AGES") + item.getAge());
         return item;
     }
 }

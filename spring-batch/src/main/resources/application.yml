@@ -1,7 +1,7 @@
 spring:
   batch:
     job:
-      name: "FLAT_FILE_CHUNK_JOB"
+      name: "JDBC_PAGING_CHUNK_JOB"
   datasource:
     hikari:
       maximum-pool-size: 10
