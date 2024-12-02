@@ -2,14 +2,14 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
     open-in-view: false
   batch:
     job:
-      name: "JDBC_PAGING_CHUNK_JOB"
+      name: "JPA_ITEM_INSERT_DATABASE_WRITER_JOB"
   datasource:
     hikari:
       maximum-pool-size: 10
