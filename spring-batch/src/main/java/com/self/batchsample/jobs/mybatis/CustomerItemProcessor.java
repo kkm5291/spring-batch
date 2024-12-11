@@ -9,6 +9,7 @@ public class CustomerItemProcessor implements ItemProcessor<MybatisCustomer, Myb
     @Override
     public MybatisCustomer process(MybatisCustomer item) throws Exception {
         log.info("Item Processor ------------- {}", item);
+        item.setName(item.getName().toUpperCase());
         return item;
     }
 }

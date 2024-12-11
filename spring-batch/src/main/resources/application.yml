@@ -16,6 +16,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: '!1q2w3e4r'
+    password: 1234
 mybatis:
   mapper-locations: classpath:/xml_mybatis/customer.xml

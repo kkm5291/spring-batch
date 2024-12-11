@@ -13,7 +13,9 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +50,20 @@ public class MyBatisReaderJobConfig {
                 .build();
     }
 
+    @Bean
+    public FlatFileItemReader<MybatisCustomer> flatFileItemReader() throws Exception {
+
+        return new FlatFileItemReaderBuilder<MybatisCustomer>()
+                .name("FlatFileItemReader")
+                .resource(new FileSystemResource("./output/task07_customer_new_v4.csv"))
+                .encoding(ENCODING)
+                .delimited().delimiter("\t")
+                .names("id", "name", "age", "gender")
+                .targetType(MybatisCustomer.class)
+                .build();
+
+    }
+
     // csv 파일로 writer 하는 역할
     @Bean
     public FlatFileItemWriter<MybatisCustomer> task07customerCursorFlatFileItemWriter() {
@@ -56,7 +72,7 @@ public class MyBatisReaderJobConfig {
                 .resource(new FileSystemResource("./output/task07_customer_new_v4.csv"))
                 .encoding(ENCODING)
                 .delimited().delimiter("\t")
-                .names("name", "age", "gender")
+                .names("id", "name", "age", "gender")
                 .build();
     }
 
@@ -65,7 +81,7 @@ public class MyBatisReaderJobConfig {
     public MyBatisBatchItemWriter<MybatisCustomer> mybatisItemWriter() {
         return new MyBatisBatchItemWriterBuilder<MybatisCustomer>()
                 .sqlSessionFactory(sqlSessionFactory)
-                .statementId("com.self.batchsample.jobs.models.MybatisCustomer")
+                .statementId("batchsample.jobs.insertCustomers")
                 .build();
     }
 
@@ -75,7 +91,7 @@ public class MyBatisReaderJobConfig {
 
         return new StepBuilder("customerJdbcCursorStep", jobRepository)
                 .<MybatisCustomer, MybatisCustomer>chunk(CHUNK_SIZE, transactionManager)
-                .reader(myBatisItemReader())
+                .reader(flatFileItemReader())
                 .processor(new CustomerItemProcessor())
                 .writer(mybatisItemWriter())
                 .build();
