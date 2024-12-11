@@ -17,6 +17,8 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
+import org.springframework.batch.item.support.CompositeItemProcessor;
+import org.springframework.batch.item.support.builder.CompositeItemProcessorBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Slf4j
 @Configuration
@@ -92,7 +95,7 @@ public class MyBatisReaderJobConfig {
         return new StepBuilder("customerJdbcCursorStep", jobRepository)
                 .<MybatisCustomer, MybatisCustomer>chunk(CHUNK_SIZE, transactionManager)
                 .reader(flatFileItemReader())
-                .processor(new CustomerItemProcessor())
+                .processor(compositeItemProcessor())
                 .writer(mybatisItemWriter())
                 .build();
     }
@@ -106,4 +109,15 @@ public class MyBatisReaderJobConfig {
                 .start(task07customerJdbcCursorStep)
                 .build();
     }
+
+    @Bean
+    public CompositeItemProcessor<MybatisCustomer, MybatisCustomer> compositeItemProcessor() {
+        return new CompositeItemProcessorBuilder<MybatisCustomer, MybatisCustomer>()
+                .delegates(List.of(
+                        new LowerCaseItemProcessor(),
+                        new After20YearsItemProcessor()
+                ))
+                .build();
+    }
+
 }
